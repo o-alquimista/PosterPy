@@ -1,5 +1,3 @@
-# Sends a POST request to devdungeon.org, creating test publications.
-
 import random, string, requests
 from bs4 import BeautifulSoup
 
