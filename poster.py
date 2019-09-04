@@ -38,8 +38,8 @@ csrf_token = hidden_input['value']
 
 # The login credentials
 payload = {
-  'username':'nanodano',
-  'password':'test',
+  'username':'NanoDano',
+  'password':'admin',
   '_csrf_token':csrf_token,
 }
 
