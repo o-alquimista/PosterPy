@@ -21,7 +21,7 @@ import random, string, requests
 from bs4 import BeautifulSoup
 
 # The URL of the request
-url = 'http://devdungeon.org/en/admin/new'
+url = 'http://devdungeon.org/en/contrib/new'
 
 # The login URL
 loginURL = 'http://devdungeon.org/en/login'
