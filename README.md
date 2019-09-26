@@ -1,5 +1,9 @@
 # PosterPy
-A fixture creator for blogs.
+A fixture creator for web applications (primarily for blogs).
+
+### Features
+- Handles the CSRF token
+- Optional user authentication
 
 ## Requirements
 - [Python 3](https://www.python.org/)
@@ -8,20 +12,23 @@ A fixture creator for blogs.
 
 ## Usage
 ```
-usage: poster.py [-h] [-u USER] [-p PASSWD]
+usage: poster.py [-h] [-u USER] [-p PASSWD] [-n N] [--logincsrf] [--requestcsrf]
 
-A fixture creator for blogs
+A fixture creator for blogs.
 
-Optional arguments:
-  -h, --help                  Show this help message and exit
+optional arguments:
+  -h, --help                  show this help message and exit
   -u USER, --user USER        The user to authenticate
   -p PASSWD, --passwd PASSWD  The authentication password
+  -n N                        The number of payloads to send (defaults to 100)
+  --logincsrf                 Enable CSRF token support on login
+  --requestcsrf               Enable CSRF token support on main request
 ```
 
 ## Configuration
 The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config.ini)
-comes with placeholder values to help you configure this tool. You are required to
-configure that file before starting.
+allows you to configure this tool according to your web application. You must
+configure that file before PosterPy can perform its function.
 
 ## License
 Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
