@@ -3,8 +3,8 @@ A fixture creator for blogs.
 
 ## Requirements
 - [Python 3](https://www.python.org/)
-- [BeautifulSoup 4 library](https://www.crummy.com/software/BeautifulSoup/)
-- [Requests 2 library](https://requests.kennethreitz.org//en/master/)
+- [BeautifulSoup 4](https://www.crummy.com/software/BeautifulSoup/)
+- [Requests 2](https://requests.kennethreitz.org//en/master/)
 
 ## Usage
 ```
