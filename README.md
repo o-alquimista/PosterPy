@@ -1,8 +1,8 @@
 # PosterPy
-Sends a POST request to a web app. Useful for creating fixtures, such as multiple blog posts.
+A fixture creator for blogs.
 
 ## Requirements
-- [Python](https://www.python.org/)
+- [Python 3](https://www.python.org/)
 - [BeautifulSoup library](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 - [Requests library](https://2.python-requests.org/en/master/)
 

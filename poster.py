@@ -1,5 +1,7 @@
+#!/usr/bin/env python3
+
 '''
-PosterPy, a fixture creator for web applications.
+PosterPy, a fixture creator for blogs.
 
 Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
 
@@ -17,8 +19,16 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import random, string, requests
+import random, string, requests, argparse
 from bs4 import BeautifulSoup
+
+parser = argparse.ArgumentParser(description="A fixture creator for blogs")
+parser.add_argument("user", help="The user to authenticate")
+parser.add_argument("password", help="The authentication password")
+args = parser.parse_args()
+
+username = args.user
+password = args.password
 
 # The URL of the request
 url = 'http://devdungeon.org/en/contrib/new'
@@ -38,8 +48,8 @@ csrf_token = hidden_input['value']
 
 # The login credentials
 payload = {
-  'username':'NanoDano',
-  'password':'admin',
+  'username':username,
+  'password':password,
   '_csrf_token':csrf_token,
 }
 
