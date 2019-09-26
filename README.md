@@ -15,8 +15,7 @@ A fixture creator for blogs
 Optional arguments:
   -h, --help                  Show this help message and exit
   -u USER, --user USER        The user to authenticate
-  -p PASSWD, --passwd PASSWD
-                              The authentication password
+  -p PASSWD, --passwd PASSWD  The authentication password
 ```
 
 ## Configuration
