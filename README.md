@@ -6,6 +6,20 @@ A fixture creator for blogs.
 - [BeautifulSoup library](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
 - [Requests library](https://2.python-requests.org/en/master/)
 
+## Usage
+```
+usage: poster.py [-h] user password
+
+A fixture creator for blogs
+
+positional arguments:
+  user        The user to authenticate
+  password    The authentication password
+
+optional arguments:
+  -h, --help  show this help message and exit
+```
+
 ## License
 Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
 
