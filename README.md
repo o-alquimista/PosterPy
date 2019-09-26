@@ -20,6 +20,11 @@ optional arguments:
   -h, --help  show this help message and exit
 ```
 
+## Configuration
+The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config.ini)
+comes with placeholder values to help you configure this tool. You are required to
+configure that file before starting.
+
 ## License
 Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
 

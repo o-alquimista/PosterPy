@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import random, string, requests, argparse
+import random, string, requests, argparse, configparser
 from bs4 import BeautifulSoup
 
 parser = argparse.ArgumentParser(description="A fixture creator for blogs")
@@ -30,23 +30,20 @@ args = parser.parse_args()
 username = args.user
 password = args.password
 
-# The URL of the request
-url = 'http://devdungeon.org/en/contrib/new'
+config = configparser.ConfigParser()
+config.read('config.ini')
 
-# The login URL
-loginURL = 'http://devdungeon.org/en/login'
+loginURL = config['request.data']['loginURL']
+requestURL = config['request.data']['requestURL']
 
-# Starts a session
+# First, it must authenticate as a user. Start a session.
 client = requests.Session()
 
-# Parse the response from the URL
+# Start scraping for the hidden field
 soup = BeautifulSoup(client.get(loginURL).text, 'html.parser')
-
-# Retrieve the CSRF token
 hidden_input = soup.find(id="login__token")
 csrf_token = hidden_input['value']
 
-# The login credentials
 payload = {
   'username':username,
   'password':password,
@@ -55,34 +52,27 @@ payload = {
 
 # Authenticate
 client.post(url=loginURL, data=payload)
-
 print('Authenticating...')
 
+# The fixture creation loop
 for i in range(1, 101):
-    # Parse the response from the URL
-    soup = BeautifulSoup(client.get(url).text, 'html.parser')
-
-    # Retrieve the CSRF token
+    # Start scraping for the hidden field
+    soup = BeautifulSoup(client.get(requestURL).text, 'html.parser')
     hidden_input = soup.find(id="post__token")
     csrf_token = hidden_input['value']
 
-    # Generate a random string used to circumvent unique value requirement
+    # Generate a random string used to circumvent the unique value constraint
     random_slug = ''.join(random.choices(string.ascii_lowercase, k=6))
 
-    # The data to be posted
     payload = {
       'post[title]':'How to Build Python from Source '+random_slug,
-
       'post[summary]':'Installing Python is easy using the pre-built installers and packages from your operating system. However, if you want to build the cutting-edge version directly from GitHub master branch, you will have to build your own version from source. You may also want to do it just to reinforce your understanding of Python. This guide will walk through the steps needed to build Python 3 from source and then create a virtual environment that you can use for projects.',
-
       'post[body]':'Installing Python is easy using the pre-built installers and packages from your operating system. However, if you want to build the cutting-edge version directly from GitHub master branch, you will have to build your own version from source. You may also want to do it just to reinforce your understanding of Python. This guide will walk through the steps needed to build Python 3 from source and then create a virtual environment that you can use for projects.',
-
       'post[_token]':csrf_token,
     }
 
-    # Post it
-    client.post(url=url, data=payload)
-
+    # Execute request
+    client.post(url=requestURL, data=payload)
     print('Item '+str(i)+' published.')
 
 print('All items published.')
