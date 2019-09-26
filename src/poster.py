@@ -23,36 +23,39 @@ import random, string, requests, argparse, configparser
 from bs4 import BeautifulSoup
 
 parser = argparse.ArgumentParser(description="A fixture creator for blogs")
-parser.add_argument("user", help="The user to authenticate")
-parser.add_argument("password", help="The authentication password")
+parser.add_argument("-u", "--user", help="The user to authenticate")
+parser.add_argument("-p", "--passwd", help="The authentication password")
 args = parser.parse_args()
 
-username = args.user
-password = args.password
-
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('../config/config.ini')
 
 loginURL = config['request.data']['loginURL']
 requestURL = config['request.data']['requestURL']
 
-# First, it must authenticate as a user. Start a session.
+# Start a session
 client = requests.Session()
 
-# Start scraping for the hidden field
-soup = BeautifulSoup(client.get(loginURL).text, 'html.parser')
-hidden_input = soup.find(id="login__token")
-csrf_token = hidden_input['value']
+def login(username, password, loginURL, client):
+    # Start scraping for the hidden field
+    soup = BeautifulSoup(client.get(loginURL).text, 'html.parser')
+    hidden_input = soup.find(id="login__token")
+    csrf_token = hidden_input['value']
 
-payload = {
-  'username':username,
-  'password':password,
-  '_csrf_token':csrf_token,
-}
+    payload = {
+      'username':username,
+      'password':password,
+      '_csrf_token':csrf_token,
+    }
 
-# Authenticate
-client.post(url=loginURL, data=payload)
-print('Authenticating...')
+    # Authenticate
+    client.post(url=loginURL, data=payload)
+    return
+
+if args.user and args.passwd:
+    username = args.user
+    password = args.passwd
+    login(username, password, loginURL, client)
 
 # The fixture creation loop
 for i in range(1, 101):

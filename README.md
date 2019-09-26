@@ -8,16 +8,15 @@ A fixture creator for blogs.
 
 ## Usage
 ```
-usage: poster.py [-h] user password
+usage: poster.py [-h] [-u USER] [-p PASSWD]
 
 A fixture creator for blogs
 
-positional arguments:
-  user        The user to authenticate
-  password    The authentication password
-
-optional arguments:
-  -h, --help  show this help message and exit
+Optional arguments:
+  -h, --help                  Show this help message and exit
+  -u USER, --user USER        The user to authenticate
+  -p PASSWD, --passwd PASSWD
+                              The authentication password
 ```
 
 ## Configuration
