@@ -37,14 +37,14 @@ config.read('../config/config.ini')
 # Start a session
 client = requests.Session()
 
-def login(username, password, csrfEnabled, client, config):
+def login(user, password, csrfEnabled, client, config):
     url = config['login']['login_url']
     csrfName = config['login']['login_csrf_name']
     firstCredential = config['login_payload']['first_credential']
     secondCredential = config['login_payload']['second_credential']
 
     payload = {
-        firstCredential:username,
+        firstCredential:user,
         secondCredential:password,
     }
 
