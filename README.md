@@ -4,6 +4,7 @@ A fixture creator for web applications.
 ### Features
 - Handles the CSRF token
 - Optional user authentication
+- Flexible payload configuration
 
 ## Requirements
 - [Python 3](https://www.python.org/)
