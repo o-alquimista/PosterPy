@@ -31,7 +31,7 @@ optional arguments:
 ```
 
 ## Configuration
-The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config/config.ini)
+The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config.ini)
 allows you to configure this tool according to your web application and define
 the payloads. You must configure that file before PosterPy can perform its function.
 

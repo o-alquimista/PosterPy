@@ -32,7 +32,7 @@ parser.add_argument("--unique-field", help="Enable unique form field support", a
 args = parser.parse_args()
 
 config = configparser.ConfigParser()
-config.read('../config/config.ini')
+config.read('config.ini')
 
 # Start a session
 client = requests.Session()
