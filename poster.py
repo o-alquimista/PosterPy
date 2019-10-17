@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 '''
-PosterPy, a fixture creator for blogs.
+PosterPy, a fixture creator for web applications.
 
 Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
 
@@ -22,7 +22,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import random, string, requests, argparse, configparser
 from bs4 import BeautifulSoup
 
-parser = argparse.ArgumentParser(description="A fixture creator for blogs.")
+parser = argparse.ArgumentParser(description="A fixture creator for web applications.")
 parser.add_argument("-u", "--user", help="The user to authenticate")
 parser.add_argument("-p", "--passwd", help="The authentication password")
 parser.add_argument("-n", "--num-payloads", type=int, default=100, help="The number of payloads to send (default: 100)")

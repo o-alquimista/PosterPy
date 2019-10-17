@@ -16,7 +16,7 @@ A fixture creator for web applications.
 usage: poster.py [-h] [-u USER] [-p PASSWD] [-n NUM_PAYLOADS] [--login-csrf]
                  [--request-csrf] [--unique-field]
 
-A fixture creator for blogs.
+A fixture creator for web applications.
 
 optional arguments:
   -h, --help            show this help message and exit
