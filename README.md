@@ -12,17 +12,12 @@ A fixture creator for web applications.
 - [Requests 2](https://requests.kennethreitz.org//en/master/)
 
 ## Usage
-Edit `config.ini` as needed, then run `index.py`. See `--help` for usage information.
+The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config.ini) allows you to configure this tool according to your web application and define the payloads. You must configure that file first, then run `index.py`. See `--help` for usage information.
 
-### Examples
+Examples:
 ```
 python3 index.py -u test_username -p test_password -n 100 --login-csrf --request-csrf --unique-field
 ```
-
-## Configuration
-The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config.ini)
-allows you to configure this tool according to your web application and define
-the payloads. You must configure that file before PosterPy can perform its function.
 
 ## License
 Copyright 2019-2020 Douglas Silva (0x9fd287d56ec107ac)
