@@ -44,8 +44,8 @@ class PosterPy:
         self.post()
 
     def login(self):
-        url = self.config['login']['login_url']
-        csrf_name = self.config['login']['login_csrf_name']
+        url = self.config['login']['url']
+        csrf_name = self.config['login']['csrf_name']
         first_credential = self.config['login_payload']['first_credential']
         second_credential = self.config['login_payload']['second_credential']
 
@@ -64,8 +64,8 @@ class PosterPy:
         self.client.post(url=url, data=payload)
 
     def post(self):
-        url = self.config['request']['request_url']
-        csrf_name = self.config['request']['request_csrf_name']
+        url = self.config['request']['url']
+        csrf_name = self.config['request']['csrf_name']
         unique_form_field = self.config['request']['unique_field']
 
         payload = {}
