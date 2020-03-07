@@ -1,9 +1,7 @@
-#!/usr/bin/env python3
-
 '''
 PosterPy, a fixture creator for web applications.
 
-Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
+Copyright 2019-2020 Douglas Silva (0x9fd287d56ec107ac)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,81 +20,77 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import random, string, requests, argparse, configparser
 from bs4 import BeautifulSoup
 
-parser = argparse.ArgumentParser(description="A fixture creator for web applications.")
-parser.add_argument("-u", "--user", help="The user to authenticate")
-parser.add_argument("-p", "--passwd", help="The authentication password")
-parser.add_argument("-n", "--num-payloads", type=int, default=100, help="The number of payloads to send (default: 100)")
-parser.add_argument("--login-csrf", help="Enable CSRF token support on login", action="store_true", default=False)
-parser.add_argument("--request-csrf", help="Enable CSRF token support on main request", action="store_true", default=False)
-parser.add_argument("--unique-field", help="Enable unique form field support", action="store_true", default=False)
-args = parser.parse_args()
+class PosterPy:
+    def __init__(self):
+        parser = argparse.ArgumentParser(description="A fixture creator for web applications.")
+        parser.add_argument("-u", "--user", help="The user to authenticate")
+        parser.add_argument("-p", "--passwd", help="The authentication password")
+        parser.add_argument("-n", "--num-payloads", type=int, default=100, help="The number of payloads to send (default: 100)")
+        parser.add_argument("--login-csrf", help="Enable CSRF token support on login", action="store_true", default=False)
+        parser.add_argument("--request-csrf", help="Enable CSRF token support on main request", action="store_true", default=False)
+        parser.add_argument("--unique-field", help="Enable unique form field support", action="store_true", default=False)
+        self.arguments = parser.parse_args()
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+        self.config = configparser.ConfigParser()
+        self.config.read('config.ini')
 
-# Start a session
-client = requests.Session()
+        self.client = requests.Session()
 
-def login(user, password, csrfEnabled, client, config):
-    url = config['login']['login_url']
-    csrfName = config['login']['login_csrf_name']
-    firstCredential = config['login_payload']['first_credential']
-    secondCredential = config['login_payload']['second_credential']
+    def execute(self):
+        if self.arguments.user and self.arguments.passwd:
+            print('[STATUS] Authenticating...')
+            self.login()
 
-    payload = {
-        firstCredential:user,
-        secondCredential:password,
-    }
+        self.post()
 
-    if csrfEnabled:
-        print('[STATUS] Login CSRF enabled.')
+    def login(self):
+        url = self.config['login']['login_url']
+        csrf_name = self.config['login']['login_csrf_name']
+        first_credential = self.config['login_payload']['first_credential']
+        second_credential = self.config['login_payload']['second_credential']
 
-        # Start scraping for the hidden field
-        soup = BeautifulSoup(client.get(url).text, 'html.parser')
-        hiddenInput = soup.find(attrs={"name": csrfName})
-        payload[csrfName] = hiddenInput['value']
+        payload = {
+            first_credential:self.arguments.user,
+            second_credential:self.arguments.passwd,
+        }
 
-    client.post(url=url, data=payload)
+        if self.arguments.login_csrf:
+            print('[STATUS] Login CSRF enabled.')
 
-def post(numberOfPayloads, csrfEnabled, uniqueFieldEnabled, client, config):
-    url = config['request']['request_url']
-    csrfName = config['request']['request_csrf_name']
-    uniqueFormField = config['request']['unique_field']
+            soup = BeautifulSoup(self.client.get(url).text, 'html.parser')
+            hidden_input = soup.find(attrs={"name": csrf_name})
+            payload[csrf_name] = hidden_input['value']
 
-    payload = {}
+        self.client.post(url=url, data=payload)
 
-    # Retrieve the payload
-    for formField in config['payload']:
-        payload[formField] = config['payload'][formField]
+    def post(self):
+        url = self.config['request']['request_url']
+        csrf_name = self.config['request']['request_csrf_name']
+        unique_form_field = self.config['request']['unique_field']
 
-    if uniqueFieldEnabled:
-        print('[STATUS] Unique form field set to "' + uniqueFormField + '"')
+        payload = {}
 
-    if csrfEnabled:
-        print('[STATUS] Main request CSRF enabled.')
+        for form_field in self.config['payload']:
+            payload[form_field] = self.config['payload'][form_field]
 
-    for i in range(1, numberOfPayloads + 1):
-        if uniqueFieldEnabled:
-            # A random string guarantees that the chosen value will always be unique
-            random_slug = ''.join(random.choices(string.ascii_lowercase, k=8))
-            payload[uniqueFormField] = config['payload'][uniqueFormField] + ' ' + random_slug
+        if self.arguments.unique_field:
+            print('[STATUS] Unique form field set to "' + unique_form_field + '"')
 
-        if csrfEnabled:
-            # Start scraping for the hidden field
-            soup = BeautifulSoup(client.get(url).text, 'html.parser')
-            hiddenInput = soup.find(attrs={"name": csrfName})
-            payload[csrfName] = hiddenInput['value']
+        if self.arguments.request_csrf:
+            print('[STATUS] Main request CSRF enabled.')
 
-        client.post(url=url, data=payload)
+        for i in range(1, self.arguments.num_payloads + 1):
+            if self.arguments.unique_field:
+                random_slug = ''.join(random.choices(string.ascii_lowercase, k=8))
+                payload[unique_form_field] = self.config['payload'][unique_form_field] + ' ' + random_slug
 
-        print('Item ' + str(i) + ' sent.', end='\r', flush=True)
+            if self.arguments.request_csrf:
+                soup = BeautifulSoup(self.client.get(url).text, 'html.parser')
+                hidden_input = soup.find(attrs={"name": csrf_name})
+                payload[csrf_name] = hidden_input['value']
 
-    print(str(i) + ' items sent.')
+            self.client.post(url=url, data=payload)
 
-# User authentication
-if args.user and args.passwd:
-    print('[STATUS] Authenticating...')
-    login(args.user, args.passwd, args.login_csrf, client, config)
+            print('Item ' + str(i) + ' sent.', end='\r', flush=True)
 
-# Execute main request
-post(args.num_payloads, args.request_csrf, args.unique_field, client, config)
+        print(str(i) + ' items sent.')

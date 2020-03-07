@@ -1,7 +1,7 @@
 # PosterPy
 A fixture creator for web applications.
 
-### Features
+## Features
 - Handles the CSRF token
 - Optional user authentication
 - Flexible payload configuration
@@ -12,22 +12,11 @@ A fixture creator for web applications.
 - [Requests 2](https://requests.kennethreitz.org//en/master/)
 
 ## Usage
+Edit `config.ini` as needed, then run `index.py`. See `--help` for usage information.
+
+### Examples
 ```
-usage: poster.py [-h] [-u USER] [-p PASSWD] [-n NUM_PAYLOADS] [--login-csrf]
-                 [--request-csrf] [--unique-field]
-
-A fixture creator for web applications.
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -u USER, --user USER  The user to authenticate
-  -p PASSWD, --passwd PASSWD
-                        The authentication password
-  -n NUM_PAYLOADS, --num-payloads NUM_PAYLOADS
-                        The number of payloads to send (default: 100)
-  --login-csrf          Enable CSRF token support on login
-  --request-csrf        Enable CSRF token support on main request
-  --unique-field        Enable unique form field support
+python3 index.py -u test_username -p test_password -n 100 --login-csrf --request-csrf --unique-field
 ```
 
 ## Configuration
@@ -36,7 +25,7 @@ allows you to configure this tool according to your web application and define
 the payloads. You must configure that file before PosterPy can perform its function.
 
 ## License
-Copyright 2019 Douglas Silva (0x9fd287d56ec107ac)
+Copyright 2019-2020 Douglas Silva (0x9fd287d56ec107ac)
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
