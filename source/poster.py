@@ -32,7 +32,7 @@ class PosterPy:
         self.arguments = parser.parse_args()
 
         self.config = configparser.ConfigParser()
-        self.config.read('config.ini')
+        self.config.read('config/config.ini')
 
         self.client = requests.Session()
 
@@ -72,8 +72,8 @@ class PosterPy:
 
         payload = {}
 
-        for form_field in self.config['payload']:
-            payload[form_field] = self.config['payload'][form_field]
+        for form_field in self.config['request_payload']:
+            payload[form_field] = self.config['request_payload'][form_field]
 
         if self.arguments.unique_field:
             logging.info('Unique form field set to %s', unique_form_field)
@@ -84,7 +84,7 @@ class PosterPy:
         for i in range(1, self.arguments.num_payloads + 1):
             if self.arguments.unique_field:
                 random_slug = ''.join(random.choices(string.ascii_lowercase, k=8))
-                payload[unique_form_field] = self.config['payload'][unique_form_field] + ' ' + random_slug
+                payload[unique_form_field] = self.config['request_payload'][unique_form_field] + ' ' + random_slug
 
             if self.arguments.request_csrf:
                 soup = BeautifulSoup(self.client.get(url).text, 'html.parser')
