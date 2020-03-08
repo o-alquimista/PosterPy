@@ -17,18 +17,18 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 '''
 
-import random, string, requests, argparse, configparser
+import random, string, requests, argparse, configparser, logging
 from bs4 import BeautifulSoup
 
 class PosterPy:
     def __init__(self):
-        parser = argparse.ArgumentParser(description="A fixture creator for web applications.")
-        parser.add_argument("-u", "--user", help="The user to authenticate")
-        parser.add_argument("-p", "--passwd", help="The authentication password")
-        parser.add_argument("-n", "--num-payloads", type=int, default=100, help="The number of payloads to send (default: 100)")
-        parser.add_argument("--login-csrf", help="Enable CSRF token support on login", action="store_true", default=False)
-        parser.add_argument("--request-csrf", help="Enable CSRF token support on main request", action="store_true", default=False)
-        parser.add_argument("--unique-field", help="Enable unique form field support", action="store_true", default=False)
+        parser = argparse.ArgumentParser(description='A fixture creator for web applications.')
+        parser.add_argument('-u', '--user', help='The user to authenticate')
+        parser.add_argument('-p', '--passwd', help='The authentication password')
+        parser.add_argument('-n', '--num-payloads', type=int, default=100, help='The number of payloads to send (default: 100)')
+        parser.add_argument('--login-csrf', help='Enable CSRF token support on login', action='store_true', default=False)
+        parser.add_argument('--request-csrf', help='Enable CSRF token support on main request', action='store_true', default=False)
+        parser.add_argument('--unique-field', help='Enable unique form field support', action='store_true', default=False)
         self.arguments = parser.parse_args()
 
         self.config = configparser.ConfigParser()
@@ -36,9 +36,11 @@ class PosterPy:
 
         self.client = requests.Session()
 
+        logging.basicConfig(format='[%(levelname)s] %(message)s', level=logging.INFO)
+
     def execute(self):
         if self.arguments.user and self.arguments.passwd:
-            print('[STATUS] Authenticating...')
+            logging.info('Authenticating...')
             self.login()
 
         self.post()
@@ -55,10 +57,10 @@ class PosterPy:
         }
 
         if self.arguments.login_csrf:
-            print('[STATUS] Login CSRF enabled.')
+            logging.info('Login CSRF enabled.')
 
             soup = BeautifulSoup(self.client.get(url).text, 'html.parser')
-            hidden_input = soup.find(attrs={"name": csrf_name})
+            hidden_input = soup.find(attrs={'name': csrf_name})
             payload[csrf_name] = hidden_input['value']
 
         self.client.post(url=url, data=payload)
@@ -74,10 +76,10 @@ class PosterPy:
             payload[form_field] = self.config['payload'][form_field]
 
         if self.arguments.unique_field:
-            print('[STATUS] Unique form field set to "' + unique_form_field + '"')
+            logging.info('Unique form field set to %s', unique_form_field)
 
         if self.arguments.request_csrf:
-            print('[STATUS] Main request CSRF enabled.')
+            logging.info('Main request CSRF enabled.')
 
         for i in range(1, self.arguments.num_payloads + 1):
             if self.arguments.unique_field:
@@ -86,7 +88,7 @@ class PosterPy:
 
             if self.arguments.request_csrf:
                 soup = BeautifulSoup(self.client.get(url).text, 'html.parser')
-                hidden_input = soup.find(attrs={"name": csrf_name})
+                hidden_input = soup.find(attrs={'name': csrf_name})
                 payload[csrf_name] = hidden_input['value']
 
             self.client.post(url=url, data=payload)
