@@ -9,7 +9,7 @@ A fixture creator for web applications.
 ## Requirements
 - [Python 3](https://www.python.org/)
 - [BeautifulSoup 4](https://www.crummy.com/software/BeautifulSoup/)
-- [Requests 2](https://requests.kennethreitz.org//en/master/)
+- [Requests 2](https://requests.readthedocs.io/en/master/)
 
 ## Usage
 The file [config.ini](https://github.com/o-alquimista/PosterPy/blob/master/config/config.ini) allows you to configure this tool according to your web application and define the payloads. You must configure that file first, then run `main.py`. See `--help` for usage information.
